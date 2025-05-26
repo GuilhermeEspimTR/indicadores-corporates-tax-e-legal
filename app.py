@@ -1,5 +1,5 @@
 import dash
-from estimate_hours.estimate_hours import EstimateHours
+from pages.estimate_hours.estimate_hours import EstimateHours
 
 
 # ------------------- DASH APP E LAYOUT -------------------
