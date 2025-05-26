@@ -1,4 +1,4 @@
-from estimate_hours.data_loaders.tasks import Tasks
+from pages.estimate_hours.data_loaders.tasks import Tasks
 import plotly.graph_objects as go
 import numpy as np
 from math import ceil

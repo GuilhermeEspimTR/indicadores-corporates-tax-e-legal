@@ -1,5 +1,5 @@
 from dash import dcc, html
-from estimate_hours.components.graphs.tasks_graph import TasksGraph
+from pages.estimate_hours.components.graphs.tasks_graph import TasksGraph
 
 class Layout:
     

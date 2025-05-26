@@ -1,4 +1,4 @@
-from estimate_hours.data_loaders.work_items import WorkItems
+from pages.estimate_hours.data_loaders.work_items import WorkItems
 
 class UserStories(WorkItems):
     
