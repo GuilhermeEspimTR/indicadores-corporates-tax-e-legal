@@ -1,0 +1,8 @@
+WorkItemId,Title,WorkItemType,State,OriginalEstimate,TagNames,AssignedTo, CreatedDate, EndDate
+
+730289,?? - [DECOUPLING] Realizar a padronização para a conta padrão TR,Epic,Active,50,,{'UserEmail': 'funcionario1@email.com'}, 2025-03-13, 2025-03-18
+
+825889,[769477] Testes e análise sobre os problemas no build do android,Task,Active,12,,{'UserEmail': 'funcionario1@email.com'},  2025-03-18,2025-03-20
+
+825888,[779852] Testes e análise da API de documentos,Task,Active,42,,{'UserEmail': 'funcionario3o@email.com'}, 2025-03-18, 2025-03-24
+
