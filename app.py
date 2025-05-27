@@ -9,7 +9,7 @@ app = dash.Dash(__name__,
                            'content': 'width=device-width, initial-scale=1.0'}])
 server = app.server
 
-app.layout = EstimateHours().layout
+app.layout = EstimateHours().load()
 
 
 # ------------------- EXECUÇÃO -------------------
