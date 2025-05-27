@@ -1,0 +1,5 @@
+office365-REST-Python-Client
+dash
+plotly
+numpy
+pandas
