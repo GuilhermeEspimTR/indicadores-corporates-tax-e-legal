@@ -1,5 +1,5 @@
 import dash
-from pages.estimate_hours.estimate_hours import EstimateHours
+from pages.estimate_hours.LayOutPagina import EstimateHours
 
 
 # ------------------- DASH APP E LAYOUT -------------------
@@ -9,7 +9,7 @@ app = dash.Dash(__name__,
                            'content': 'width=device-width, initial-scale=1.0'}])
 server = app.server
 
-app.layout = EstimateHours().layout
+app.layout = EstimateHours().load()
 
 
 # ------------------- EXECUÇÃO -------------------

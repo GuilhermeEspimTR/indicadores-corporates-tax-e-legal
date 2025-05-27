@@ -1,9 +1,10 @@
+
 from dash import dcc, html
 from pages.estimate_hours.components.graphs.tasks_graph import TasksGraph
 
-class Layout:
+class EstimateHours:
     
-    def __init__(self):
+    def __init__(self) -> None:
         self.tasks_graph = TasksGraph().load()
     
     def load(self):
@@ -31,3 +32,5 @@ class Layout:
                 ], style={'padding': '20px', 'backgroundColor': '#f8f9fa', 'borderRadius': '10px'}),
             ], style={'maxWidth': '1200px', 'margin': '0 auto', 'padding': '20px'})
         ], style={'fontFamily': 'Arial, sans-serif', 'backgroundColor': '#ecf0f1', 'minHeight': '100vh', 'padding': '20px'})
+        
+    
