@@ -36,16 +36,28 @@ class WorkItems(Cache):
         self.auth = ("", "03P7OWMfefonGg9jRYK6cbElYT5VpfykfYUaMYNcbcni9u6ZgRczJQQJ99BDACAAAAADXeeUAAASAZDO3Adz")
         self.file_name = "work_items"
         self.data = self.get_from_azure_devops(self.url)
+        
+        self.data["UserName"] = self.data["AssignedTo"].apply(self.extract_user_name)
+        
+    
+    def refresh(self) -> None:
+        self.delete_cache()
+        self.data = self.get_from_azure_devops(self.url)
             
     
     def extract_user_name(self, val):
-        if pd.isna(val) or val == '':
+        if pd.isna(val) or val == "":
             return None
         if isinstance(val, dict):
-            return val.get('UserName')
-        if isinstance(val, str) and val.startswith('{'):
+            return val.get("UserName")
+        if isinstance(val, str) and val.startswith("{"):
             try:
-                return ast.literal_eval(val).get('UserName')
+                return ast.literal_eval(val).get("UserName")
             except Exception:
                 return None
         return None
+    
+    
+    def extract_tasks(self, links) -> list:
+        tasks = ast.literal_eval(links)
+        return [task["TargetWorkItem"] for task in tasks if "TargetWorkItem" in task]

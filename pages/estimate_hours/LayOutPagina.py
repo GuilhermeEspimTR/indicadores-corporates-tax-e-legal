@@ -14,6 +14,7 @@ class EstimateHours:
             html.Div([
                 html.H1("Dashboard de Tasks do Azure DevOps", 
                         style={'textAlign': 'center', 'color': '#2c3e50', 'marginBottom': 20}),
+                html.Button("Clique aqui", id="meu-botao", n_clicks=0),
                 html.Div([
                     html.H4("Cronograma de Tasks por Funcionário", 
                             style={'marginBottom': 15, 'color': '#2c3e50', 'textAlign': 'center'}),

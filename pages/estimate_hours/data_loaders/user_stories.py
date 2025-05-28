@@ -6,7 +6,6 @@ class UserStories(WorkItems):
     def __init__(self) -> None:
         super().__init__()
         self.data["EstimateHours"] = self.data["Links"].apply(self.sum_estimates)
-        self.data['UserName'] = self.data['AssignedTo'].apply(self.extract_user_name)
         self.data = self.data[
             ["WorkItemId", "Title", "State", "WorkItemType", "CreatedDate", "EstimateHours", "UserName", "AssignedTo"]
         ]

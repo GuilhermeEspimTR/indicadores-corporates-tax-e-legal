@@ -20,11 +20,6 @@ class Tasks(WorkItems):
         self.data = self.data.rename(columns={'CreatedOn': 'CreatedDate'})
         
         self.data = self.data.sort_values(by=['UserName', 'CreatedDate'])
-        
-        
-    def extract_tasks(self, links) -> list:
-        tasks = ast.literal_eval(links)
-        return [task["TargetWorkItem"] for task in tasks if "TargetWorkItem" in task]
     
     
     def extract_date(self, val):

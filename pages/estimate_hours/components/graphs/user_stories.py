@@ -12,18 +12,15 @@ class UserStoriesGraph:
         self.hours_per_day = 8.0  # Define a quantidade de horas por dia para cálculo de duração
 
     def load(self):
-        plot_data = []         # Lista para armazenar os dados que serão plotados
-        y_labels = []          # Lista para os labels do eixo Y (um para cada User Story)
-        user_last_finish_day = {}  # Dicionário para controlar o último dia de cada usuário (para empilhar as barras)
-        max_finish_day = 0     # Variável para controlar o maior dia de término (para definir o range do eixo X)
+        plot_data = [] # Lista para armazenar os dados que serão plotados
+        y_labels = [] # Lista para os labels do eixo Y (um para cada User Story)
+        user_last_finish_day = {} # Dicionário para controlar o último dia de cada usuário (para empilhar as barras)
+        max_finish_day = 0 # Variável para controlar o maior dia de término (para definir o range do eixo X)
 
         # Itera sobre cada User Story no DataFrame
         for index, row in self.df.iterrows():
-            # Extrai o nome do responsável, tratando valores nulos
             user = eval(row['AssignedTo'])['UserName'] if pd.notnull(row['AssignedTo']) and row['AssignedTo'] != '' else 'Não atribuído'
-            # Pega a estimativa de horas da User Story
             estimate_hours = float(row['EstimateHours']) if pd.notnull(row['EstimateHours']) else 0.0
-            # Calcula a duração em dias
             duration_days = estimate_hours / self.hours_per_day if self.hours_per_day else 0.0
 
             # Descobre o último dia de término desse usuário para empilhar as barras
@@ -60,9 +57,14 @@ class UserStoriesGraph:
             # Atualiza o último dia de término desse usuário
             user_last_finish_day[user] = finish_day
 
+        # Ordena plot_data pelo nome do usuário (user) em ordem alfabética
+        plot_data = sorted(plot_data, key=lambda x: x['user'].lower())
+        # Atualiza y_labels após a ordenação
+        y_labels = [us['y_label'] for us in plot_data]
         # Inverte as listas para que o gráfico fique de cima para baixo
         y_labels = y_labels[::-1]
         plot_data = plot_data[::-1]
+
         # Define a altura do gráfico proporcional ao número de User Stories
         graph_height = max(len(y_labels) * 30, 600)
 
@@ -75,15 +77,15 @@ class UserStoriesGraph:
                 x=[us['duration']],
                 base=[us['start']],
                 orientation='h',
-                marker_color='rgb(51,153,255)',
+                marker_color='rgb(51,153,255)',  # Cor azul
                 text=f"US {us['id']}",
                 textposition='inside',
                 insidetextanchor='middle',
                 hoverinfo='text',
                 hovertext=f"ID: {us['id']}<br>Título: {us['title']}<br>Responsável: {us['user']}<br>" +
-                          f"Estimativa: {us['estimate_hours']}h<br>Duração: {us['duration']:.1f} dias<br>" +
-                          (f"Data Início: {us['created_date'].strftime('%d/%m/%Y')}" if us['created_date'] is not None else "Data Início: -") + "<br>" +
-                          (f"Data Fim (calculada): {us['end_date'].strftime('%d/%m/%Y')}" if us['end_date'] is not None else "Data Fim (calculada): -"),
+                        f"Estimativa: {us['estimate_hours']}h<br>Duração: {us['duration']:.1f} dias<br>" +
+                        (f"Data Início: {us['created_date'].strftime('%d/%m/%Y')}" if us['created_date'] is not None else "Data Início: -") + "<br>" +
+                        (f"Data Fim (calculada): {us['end_date'].strftime('%d/%m/%Y')}" if (us['end_date'] is not None and pd.notnull(us['end_date'])) else "Data Fim (calculada): -"),
             ))
 
         # Adiciona linhas verticais para cada dia no gráfico (grade)
@@ -117,8 +119,7 @@ class UserStoriesGraph:
                 categoryarray=y_labels,
                 tickvals=y_labels,
                 ticktext=y_labels,
-                showgrid=False,
-                tickfont=dict(size=10)
+                showgrid=False
             ),
             showlegend=False
         )
