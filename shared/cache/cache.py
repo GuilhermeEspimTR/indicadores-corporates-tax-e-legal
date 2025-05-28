@@ -39,6 +39,8 @@ class Cache(Requests):
                     file.close()
         
         return pd.read_csv(PATH)
+
+        
     
     
     # def get_from_sharepoint(self, url: str, file_url: str, email: str, password: str) -> None:

@@ -51,7 +51,7 @@ class TasksGraph:
 
         y_labels = y_labels[::-1]
         plot_data = plot_data[::-1]
-        graph_height = min(max(len(y_labels) * 40, 600), 2000)
+        graph_height = max(len(y_labels) * 30, 600)
 
         fig = go.Figure()
         for task in plot_data:
