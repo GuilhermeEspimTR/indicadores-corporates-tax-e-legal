@@ -57,7 +57,6 @@ class EstimateHours:
                         dcc.Graph(
                             id='user-story-timeline',
                             config={'displayModeBar': False},
-                            figure=self.user_stories_graph.load(),
                             style={'height': '2000px', 'width': '100%'}
                         )
                     ], style={
@@ -83,9 +82,19 @@ class EstimateHours:
             # Se não houver seleção, mostra tudo
             return tg.load()
         
+        @callback(
+            Output('user-story-timeline', 'figure'),
+            Input('user-select-selected', 'data')  # ou o id do filtro que você quiser
+        )
+        def update_user_story_graph(selected_users):
+            tg = UserStoriesGraph()
+            if selected_users:
+                tg.filter_data_frame("UserName", selected_users)
+            # Se não houver seleção, mostra tudo
+            return tg.load()
+        
         return layout
         
     def onChangeNames(self, names) -> None:
-        print(names)
         if len(names) > 0:
             self.tasks_graph.filter_data_frame("UserName", names)

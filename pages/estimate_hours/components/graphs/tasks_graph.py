@@ -4,11 +4,13 @@ import numpy as np
 from math import ceil
 from datetime import timedelta
 import pandas as pd
+from shared.components.graphs.graph import Graph
 
-class TasksGraph:
+class TasksGraph(Graph):
     def __init__(self) -> None:
         # Carrega o DataFrame das tasks, removendo linhas sem estimativa
-        self.df = Tasks().data.dropna(subset=['OriginalEstimate'])
+        self.original_df = Tasks().data.dropna(subset=['OriginalEstimate'])
+        self.df = self.original_df.copy()
         self.hours_per_day = 8.0  # Define a quantidade de horas por dia para cálculo de duração
 
     def load(self):
@@ -118,9 +120,3 @@ class TasksGraph:
             showlegend=False
         )
         return fig
-    
-    def filter_data_frame(self, column, values):
-        if values or self.df.empty:
-            self.df = self.df[self.df[column].isin(values)]
-        else:
-            self.df = Tasks().data.dropna(subset=['OriginalEstimate'])

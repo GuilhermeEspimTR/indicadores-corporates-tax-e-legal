@@ -3,11 +3,13 @@ import pandas as pd
 from math import ceil
 from datetime import timedelta
 from pages.estimate_hours.data_loaders.user_stories import UserStories
+from shared.components.graphs.graph import Graph
 
-class UserStoriesGraph:
+class UserStoriesGraph(Graph):
     def __init__(self):
         # Carrega o DataFrame das User Stories, removendo linhas sem estimativa ou com estimativa zero
-        self.df = UserStories().data.dropna(subset=['EstimateHours'])
+        self.original_df = UserStories().data.dropna(subset=['EstimateHours'])
+        self.df = self.original_df.copy()  # Faz uma cópia do DataFrame original para manipulação
         self.df = self.df[self.df['EstimateHours'] != 0]
         self.hours_per_day = 8.0  # Define a quantidade de horas por dia para cálculo de duração
 
