@@ -7,25 +7,30 @@ class MultiSelectField(html.Div):
    
         self.all_value = "__all__"
         options_with_all = [{"label": "Selecionar todos", "value": self.all_value}] + options
+        
         super().__init__(
             id=f"{id}-container",
             style=style,
             children=[
                 html.P(placeholder, style={'marginBottom': '5px', 'color': '#555'}),
+                
                 html.Div(
                     id=f"{id}-select-div",
                     n_clicks=0,
                     tabIndex=0,
                     style={
                         'width': '100%',
-                        'height': '38px',
+                        'height': '30px',
                         'backgroundColor': '#f8f9fa',
                         'borderRadius': '5px',
                         'padding': '5px',
-                        'cursor': 'pointer'
+                        'cursor': 'pointer',
+                        'display': 'flex',
+                        'alignItems': 'center'
                     },
                     children="Clique para selecionar"
                 ),
+                
                 html.Div(
                     id=f"{id}-overlay",
                     n_clicks=0,
@@ -40,6 +45,7 @@ class MultiSelectField(html.Div):
                         'zIndex': 1000,
                     }
                 ),
+                
                 html.Div(
                     id=f"{id}-checkboxes-div",
                     style={
@@ -63,6 +69,7 @@ class MultiSelectField(html.Div):
                         )
                     ]
                 ),
+                
                 dcc.Store(id=f"{id}-store", data=False),
                 dcc.Store(id=f"{id}-selected", data=[]),
             ]
@@ -104,7 +111,6 @@ class MultiSelectField(html.Div):
                 'left': 0,
                 'width': '100vw',
                 'height': '100vh',
-                'backgroundColor': 'rgba(0,0,0,0.1)',
                 'zIndex': 1000,
             }
             if not opened:

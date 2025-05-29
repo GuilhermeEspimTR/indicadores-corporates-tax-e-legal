@@ -22,4 +22,4 @@ class Users(WorkItems):
                 if user:
                     user_names.add(user)
                     
-        self.data = pd.DataFrame({"UserName": list(user_names)})
+        self.data = pd.DataFrame({"UserName": sorted(list(user_names))})

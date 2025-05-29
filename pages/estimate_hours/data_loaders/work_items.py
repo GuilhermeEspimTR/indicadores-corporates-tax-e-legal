@@ -2,7 +2,7 @@ from shared.cache.cache import Cache
 from pandas import DataFrame
 import pandas as pd
 import ast
-import asyncio
+import re
 
 class WorkItems(Cache):
     
@@ -41,6 +41,12 @@ class WorkItems(Cache):
         
         self.data["UserName"] = self.data["AssignedTo"].apply(self.extract_user_name)
         self.data["IterationPath"] = self.data["Iteration"].apply(self.extract_iteration_path)
+        
+        col = self.data['IterationPath'].astype(str).str.split('\\').str[-1]
+
+        pattern = r"^\d{4}_S\d{2}_[A-Za-z]{3}\d{2}-[A-Za-z]{3}\d{2}$"
+
+        self.data['SprintDate'] = col.apply(lambda x: x if re.match(pattern, x) else None)
         
     
     def refresh(self) -> None:

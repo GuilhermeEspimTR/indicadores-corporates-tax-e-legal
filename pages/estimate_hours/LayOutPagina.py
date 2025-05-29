@@ -4,6 +4,7 @@ from pages.estimate_hours.components.graphs.tasks_graph import TasksGraph
 from pages.estimate_hours.components.graphs.user_stories import UserStoriesGraph
 from shared.components.fields.multi_select_field import MultiSelectField
 from pages.estimate_hours.data_loaders.users import Users
+from pages.estimate_hours.data_loaders.sprints import Sprints
 
 class EstimateHours:
     
@@ -11,6 +12,7 @@ class EstimateHours:
         self.tasks_graph = TasksGraph()
         self.user_stories_graph = UserStoriesGraph()
         self.users = Users().data['UserName'].tolist()
+        self.sprint_dates = Sprints().data['SprintDate'].tolist()
     
     def load(self):
         layout = html.Div([
@@ -22,15 +24,14 @@ class EstimateHours:
                     MultiSelectField(
                         id='user-select',
                         options=[{'label': user, 'value': user} for user in self.users],
-                        placeholder="Uusários",
+                        placeholder="Usários",
                         style={'flex': '1', 'marginBottom': 20},
-                        onChange=lambda names: self.onChangeNames(names)
                     ),
                     MultiSelectField(
-                        id='user-select-2',
-                        options=[{'label': user, 'value': user} for user in self.users],
-                        placeholder="Uusários",
-                        style={'flex': '1', 'marginBottom': 20}
+                        id='sprint-date-select',
+                        options=[{'label': date, 'value': date} for date in self.sprint_dates],
+                        placeholder="Datas das Sprints",
+                        style={'flex': '1', 'marginBottom': 20},
                     ),
                 ], style={'display': 'flex', 'justifyContent': 'space-between'}),
                 html.Div([
@@ -73,24 +74,29 @@ class EstimateHours:
         
         @callback(
             Output('task-timeline', 'figure'),
-            Input('user-select-selected', 'data')  # ou o id do filtro que você quiser
+            Input('user-select-selected', 'data'),
+            Input('sprint-date-select-selected', 'data')  # novo filtro
         )
-        def update_task_graph(selected_users):
+        def update_task_graph(selected_users, selected_sprints):
             tg = TasksGraph()
             if selected_users:
                 tg.filter_data_frame("UserName", selected_users)
-            # Se não houver seleção, mostra tudo
+            if selected_sprints:
+                tg.filter_data_frame("SprintDate", selected_sprints)
             return tg.load()
         
         @callback(
             Output('user-story-timeline', 'figure'),
-            Input('user-select-selected', 'data')  # ou o id do filtro que você quiser
+            Input('user-select-selected', 'data'),   
+            Input('sprint-date-select-selected', 'data')  # novo filtro
         )
-        def update_user_story_graph(selected_users):
+        def update_user_story_graph(selected_users, selected_sprints):
             tg = UserStoriesGraph()
             if selected_users:
                 tg.filter_data_frame("UserName", selected_users)
             # Se não houver seleção, mostra tudo
+            if selected_sprints:
+                tg.filter_data_frame("SprintDate", selected_sprints)
             return tg.load()
         
         return layout

@@ -1,6 +1,7 @@
 from pages.estimate_hours.data_loaders.work_items import WorkItems
 import pandas as pd
 import ast
+import re
 
 
 class Tasks(WorkItems):
@@ -20,6 +21,14 @@ class Tasks(WorkItems):
         self.data = self.data.rename(columns={'CreatedOn': 'CreatedDate'})
         
         self.data = self.data.sort_values(by=['UserName', 'CreatedDate'])
+        
+        self.data["IterationPath"] = self.data["Iteration"].apply(self.extract_iteration_path)
+        
+        col = self.data['IterationPath'].astype(str).str.split('\\').str[-1]
+
+        pattern = r"^\d{4}_S\d{2}_[A-Za-z]{3}\d{2}-[A-Za-z]{3}\d{2}$"
+
+        self.data['SprintDate'] = col.apply(lambda x: x if re.match(pattern, x) else None)
     
     
     def extract_date(self, val):

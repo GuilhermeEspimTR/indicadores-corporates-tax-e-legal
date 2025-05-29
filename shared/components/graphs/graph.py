@@ -9,4 +9,4 @@ class Graph:
         if values or self.df.empty:
             self.df = self.df[self.df[column].isin(values)]
         else:
-            self.df = self.original_df.data.dropna(subset=['OriginalEstimate'])
+            self.df = self.original_df

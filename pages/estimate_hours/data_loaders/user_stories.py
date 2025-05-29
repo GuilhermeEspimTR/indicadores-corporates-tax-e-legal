@@ -9,7 +9,7 @@ class UserStories(WorkItems):
         self.data["EstimateHours"] = self.data["Links"].apply(self.sum_estimates)
         self.data["CreatedDate"] = self.data["Links"].apply(self.get_first_task_created_on)
         self.data = self.data[
-            ["WorkItemId", "Title", "State", "WorkItemType", "CreatedDate", "EstimateHours", "UserName", "AssignedTo"]
+            ["WorkItemId", "Title", "State", "WorkItemType", "CreatedDate", "EstimateHours", "UserName", "AssignedTo", "IterationPath", "SprintDate", "Iteration"]
         ]
         
     

@@ -1,22 +1,31 @@
-from pages.estimate_hours.data_loaders.work_items import WorkItems
+from pages.estimate_hours.data_loaders.user_stories import UserStories
+from pages.estimate_hours.data_loaders.tasks import Tasks
 import pandas as pd
-import ast
+import re
 
-class IterationPath(WorkItems):
+class IterationPath:
     
     def __init__(self) -> None:
-        paths = set(self.data["IterationPath"].dropna().unique())
+        super().__init__()
+        pattern = r"^\d{4}_S\d{2}_[A-Za-z]{3}\d{2}-[A-Za-z]{3}\d{2}$"
+        paths = []
+        user_stories = UserStories().data
+        user_stories = user_stories[user_stories["EstimateHours"] != 0]
+        user_stories_paths = set(user_stories["IterationPath"].dropna().unique())
         
-        all_tasks = []
-        for links in self.data["Links"]:
-            all_tasks.extend(self.extract_iteration_paths(links))
+        for path in user_stories_paths:
+            date = path.split('\\')[-1]
+            if re.match(pattern, date):
+                paths.append(path)
             
-        tasks = pd.DataFrame(all_tasks)
-        for links in self.data["Links"]:
-            tasks = ast.literal_eval(links)
-            for task in tasks:
-                iteration_path = task.get("TargetWorkItem", {}).get("Iteration", {}).get("IterationPath")
-                if iteration_path:
-                    paths.add(iteration_path)
         
-        self.data = pd.DataFrame({"IterationPath": list(paths)})
+        tasks = Tasks().data
+        tasks = tasks[tasks["OriginalEstimate"] != 0]
+        tasks_paths = set(tasks["IterationPath"].dropna().unique())
+        
+        for path in tasks_paths:
+            date = path.split('\\')[-1]
+            if re.match(pattern, date):
+                paths.append(path)
+    
+        self.data = pd.DataFrame({"IterationPath": paths})
