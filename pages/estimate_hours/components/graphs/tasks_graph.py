@@ -118,3 +118,9 @@ class TasksGraph:
             showlegend=False
         )
         return fig
+    
+    def filter_data_frame(self, column, values):
+        if values or self.df.empty:
+            self.df = self.df[self.df[column].isin(values)]
+        else:
+            self.df = Tasks().data.dropna(subset=['OriginalEstimate'])

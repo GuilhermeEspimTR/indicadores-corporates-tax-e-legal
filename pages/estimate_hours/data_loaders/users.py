@@ -5,6 +5,7 @@ import ast
 class Users(WorkItems):
     
     def __init__(self) -> None:
+        super().__init__()
         user_names = set(self.data["UserName"].dropna().unique())
         
         all_tasks = []
